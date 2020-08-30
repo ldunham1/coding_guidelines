@@ -27,7 +27,7 @@ They are **Guidelines** not **Rules**.
 These general naming conventions used to help discern intended usage and aid readability.
 
 #### Object naming
-```
+```python
 # ../package_name/module_name.py
 
 
@@ -50,7 +50,7 @@ class ClassName():
 
 #### Private object naming
 Private objects are simply prefixed with a single underscore.
-```
+```python
 # ../_package_name/_module_name.py
 
 
@@ -76,13 +76,13 @@ class _ClassName():
 Use descriptive names wherever possible, favouring readability over convenience.
 
 Single letter variable names are only suitable representing an integer.
-```
+```python
 for i in range(10):
     print(i)
 ```
 
 Use a single underscore for a throwaway variable.
-```
+```python
 for _ in range(10):
     print(True)
 ```
@@ -90,7 +90,7 @@ for _ in range(10):
 Reverse notation aids readability and auto-complete.
 
 ##### + Yes
-```
+```python
 layer_enabled = ...
 layer_disabled = ...
 layer_mode_additive = ...
@@ -98,7 +98,7 @@ layer_mode_override = ...
 ```
 
 ##### - No
-```
+```python
 enabled_layer = ...
 disabled_layer = ...
 additive_layer_mode = ...
@@ -109,7 +109,7 @@ override_layer_mode = ...
 Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), the general concensus is for public parts of the API to reflect existing usage. 
 
 ##### + Yes
-```
+```python
 class QCustomWidget(QWidget):
 
     def conformingMethod(self):
@@ -118,7 +118,7 @@ class QCustomWidget(QWidget):
 ```
 
 ##### - No
-```
+```python
 class CustomWidget(QWidget):
 
     def non_conforming_method(self):
@@ -132,7 +132,7 @@ class CustomWidget(QWidget):
 #### Import orders
 
 Use a [natural sort order](https://en.wikipedia.org/wiki/Natural_sort_order) by line instead of package/module name.
-```
+```python
 from functools import partial
 from itertools import izip
 import json
@@ -142,7 +142,7 @@ import sys
 
 #### Import grouping
 Group imports using braces, separated by line (with natural sorting). 
-```
+```python
 from itertools import (
     imap,
     izip,
@@ -157,7 +157,7 @@ Separate imports by source into natural sorted sections.
 2. Third-party imports
 3. Local imports.
 
-```
+```python
 from functools import partial
 import os
 
@@ -178,7 +178,7 @@ One-liners are usually discouraged unless they are readable at a glance.
 
 #### Comprehensions
 Comprehensions are encouraged to follow this pattern.
-```
+```python
 my_list_comp = [
     name
     for name in name_list
@@ -198,13 +198,13 @@ This aids readability by explicitly expressing intent.
 
 
 ##### + Yes
-```
+```python
 full_name = 'Bob.Something'
 surname = full_name.split('.')[-1]
 ```
 
 ##### - No
-```
+```python
 full_name = 'Bob.Something'
 surname = full_name.split('.')[1]
 ```
