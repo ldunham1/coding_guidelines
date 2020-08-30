@@ -1,26 +1,86 @@
 # Python Coding Guidelines
 
 ## Introduction:
-These guidelines are formed and iterated upon during development of various projects. They attempt to favour logic and readability, and are updated as they mature.
+These Guidelines have been designed for Python, by non-programmers.
+They have been developed over various projects and will continue to do so. 
 
-They are **Guidelines** not **Rules**.
+They are not perfect. They do however heavily favour logic and readability to improve likelihood of adoption.
+
+They are **Guidelines** not **Rules**. The whole point is to improve readability and code stability with logical reasoning, not to "check boxes" ala "pep8-ers".
  
-[PEP 8](https://www.python.org/dev/peps/pep-0008/) is used as the basis of these guidelines.
+[PEP 8](https://www.python.org/dev/peps/pep-0008/) is used as the base of these guidelines.
 
 ## Contents:
+- [General](#general)
 - [Naming](#naming)
  - [Public object naming](#object-naming)
  - [Private object naming](#private-object-naming)
  - [General naming conventions](#general-naming-conventions)
- - [Private object naming](#private-object-naming)
 - [Naming Exceptions](#naming-exceptions)
 - [Importing](#importing)
- - [Ordering](#import-orders)
- - [Grouping](#import-grouping)
- - [Sections](#import-Sectioning)
 - [Line Length](#line-length)
- - [Comprehensions](#comprehensions)
+- [Line Breaks](#line-breaks)
 - [Slicing](#index-slicing)
+- [Separators](#separators)
+- [Exceptions](#exceptions)
+
+
+
+## General:
+
+The flow of a module should follow;
+1. Module docstring (if any).
+2. [Imports](#importing).
+3. Content.
+4. \__all__ declaration (if used).
+5. `if __name__ == '__main__': ` (if used).
+
+Where logical and possible, objects should be declared **before** they are used. We want to improve the developer's chances of encountering an object before it was used - improving readability.
+```python
+# Yes
+
+def ensure_strings(items):
+    return list(map(str, items))
+
+
+def join_names(names, delim=', '):
+    str_names = ensure_strings(names)
+    return delim.join(str_names)
+
+
+class Foo(object):
+
+    def bar(self):
+        name_list = [
+            'Lee',
+            'Mike',
+            'Agathe',
+        ]
+        print(join_names(name_list))
+
+
+# No
+class Foo(object):
+
+    def bar(self):
+        name_list = [
+            'Lee',
+            'Mike',
+            'Agathe',
+        ]
+        print(join_names(name_list))
+
+
+def join_names(names, delim=', '):
+    str_names = ensure_strings(names)
+    return delim.join(str_names)
+
+
+def ensure_strings(items):
+    return list(map(str, items))
+
+
+```
 
 
 ## Naming:
@@ -40,7 +100,7 @@ def function_name(arg):
     ...
 
 
-class ClassName():
+class ClassName(object):
     ...
 
     def method_name(self, ...):
@@ -63,7 +123,7 @@ def _function_name(arg):
     ...
 
 
-class _ClassName():
+class _ClassName(object):
     ...
 
     def _method_name(self, ...):
@@ -73,52 +133,42 @@ class _ClassName():
 
 #### General naming conventions
 
-Use descriptive names wherever possible, favouring readability over convenience.
+Use descriptive names wherever possible, favouring readability over convenience. This being said - avoid over-descriptive or unnecessary long names, as this is usually unreadable when used.
 
-Single letter variable names are only suitable representing an integer.
+Single letter variable names are only suitable representing an integer and _ for the throwaway variable.
 ```python
 for i in range(10):
-    print(i)
+    for _ in range(i):
+        print(True)
 ```
 
-Use a single underscore for a throwaway variable.
-```python
-for _ in range(10):
-    print(True)
-```
+Use reverse notation to improve readability and auto-complete.
 
-Reverse notation aids readability and auto-complete.
-
-##### + Yes
 ```python
+# Yes
 layer_enabled = ...
 layer_disabled = ...
 layer_mode_additive = ...
 layer_mode_override = ...
-```
 
-##### - No
-```python
+# No
 enabled_layer = ...
 disabled_layer = ...
 additive_layer_mode = ...
 override_layer_mode = ...
 ```
 
-### Naming - Exceptions:
-Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), the general concensus is for public parts of the API to reflect existing usage. 
+### Naming Exceptions:
+Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), the general concensus for public objects should reflect existing usage. 
 
-##### + Yes
 ```python
+# Yes
 class QCustomWidget(QWidget):
 
     def conformingMethod(self):
-        non_public_variable = True
+        ...
 
-```
-
-##### - No
-```python
+# No
 class CustomWidget(QWidget):
 
     def non_conforming_method(self):
@@ -129,66 +179,78 @@ class CustomWidget(QWidget):
 
 ## Importing:
 
-#### Import orders
+Imports are grouped, sorted and indented logically to improve readability.
 
-Use a [natural sort order](https://en.wikipedia.org/wiki/Natural_sort_order) by line instead of package/module name.
-```python
-from functools import partial
-from itertools import izip
-import json
-import os
-import sys
-```
+Separate imports by source into 3 distinct groups.
+  1. Standard library imports
+  2. Third-party imports
+  3. Local imports.
 
-#### Import grouping
-Group imports using braces, separated by line (with natural sorting). 
+Sort each group using [natural sort order](https://en.wikipedia.org/wiki/Natural_sort_order) <ins>by line</ins> by line (meaning from is placed before import).
+
+Implicit relative imports are placed first in their respective groups.
+
+
 ```python
 from itertools import (
     imap,
     izip,
     permutations,
 )
-```
-
-#### Import sectioning
-Separate imports by source into natural sorted sections.
-
-1. Standard library imports
-2. Third-party imports
-3. Local imports.
-
-```python
-from functools import partial
-import os
+import abc
+import sys
 
 from numpy import arange
 import six
 
 from . import some_module
 from package_name import other_module
-import other_package
 ```
 
 
 ## Line length:
-In theory, a line can be as long it wants to be provided it is readable without horizontal scrolling.
-This usually means lines of around 100-120 characters are at the upper end of acceptability.
-One-liners are usually discouraged unless they are readable at a glance.
+80-120 characters is usually fine. Just avoid lines that need vertical scrolling.
 
+Use parentheses for line continuations.
 
-#### Comprehensions
-Comprehensions are encouraged to follow this pattern.
 ```python
-my_list_comp = [
-    name
-    for name in name_list
-    if name.startswith('Bob')
+full_name_list = [
+    'Bob.Something',
+    'Mark.Else',
+    'John.Blogger',
 ]
-my_dict_comp = {
-    full_name.split('.')[0]: full_name.split('.')[-1] 
+
+list_comp = [
+    name  # Return variable
+    for name in name_list  # For loop
+    if name.startswith('Bob')  # Condition
+]
+dict_comp = {
+    firstname: surname 
     for full_name in full_name_list
-    if full_name.startswith('Bob')
+    for firstname, surname  in full_name.split('.')
 }
+
+for name, age in zip(list_comp,
+                     [10, 20, 30]):
+    ...
+
+```
+
+
+## Line breaks:
+Use empty line breaks at the end of a scope and before a comment.
+
+```python
+# "Bob" is a special person, treat them well.
+if name == 'Bob':
+    
+    # Do something here.
+    something_nice(name)
+
+else:
+    print('Not "Bob"')
+
 ```
 
 
@@ -196,15 +258,75 @@ my_dict_comp = {
 If you intend on getting the last item with a slice, then use -1, regardless of the fixed length.
 This aids readability by explicitly expressing intent.
 
-
-##### + Yes
 ```python
+# Yes
 full_name = 'Bob.Something'
 surname = full_name.split('.')[-1]
-```
 
-##### - No
-```python
+# No
 full_name = 'Bob.Something'
 surname = full_name.split('.')[1]
+```
+
+
+## Separators:
+Separators are used to group sections of code to improve readability at a glance and therefore are usually as long as you'd accept a line to be.
+
+```python
+import pprint
+
+
+# ---------------------------------------------------
+def remove_first_names(name_list):
+    family_names = [
+        name.split('.')[-1]
+        for name in name_list
+    ]
+    return family_names
+
+
+def remove_family_names(name_list):
+    first_names = [
+        name.split('.')[0]
+        for name in name_list
+    ]
+    return first_names
+
+
+# ---------------------------------------------------
+def is_a_cat_name(name):
+    return name in CAT_NAMES
+
+
+```
+
+
+## Exceptions:
+Try/except blocks should always provide an adequate exception type.
+
+**Lazy Exception handling is discouraged if not necessary.** 
+
+Remember, we want to improve readability not "check boxes".
+
+```python
+# Yes
+try:
+    1 / 0
+
+except ZeroDivisionError:
+    pass
+
+# No
+try:
+    1 / 0
+
+except:
+    pass
+
+# Still No
+try:
+    1 / 0
+
+except Exception:
+    pass
 ```
