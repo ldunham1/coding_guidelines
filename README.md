@@ -1,17 +1,22 @@
-# Python Coding Guidelines
+# Python Coding Guidelines for Technical Artists
+
+![Python-Image](https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png)
 
 ## Introduction:
-These Guidelines have been designed for Python, by non-programmers.
+These guidelines have been designed for Python by <ins>non-programmers</ins> favouring logic and 
+readability to improve likelihood of adoption.
+
 They have been developed over various projects and will continue to do so. 
 
-They are not perfect. They do however heavily favour logic and readability to improve likelihood of adoption.
-
-They are **Guidelines** not **Rules**. The whole point is to improve readability and code stability with logical reasoning, not to "check boxes" ala "pep8-ers".
+They are **Guidelines** not **Rules**. The whole point is to improve 
+readability and code stability with logical reasoning, not to "check boxes" ala "pep8-ers".
  
-[PEP 8](https://www.python.org/dev/peps/pep-0008/) is used as the base of these guidelines.
+[PEP 8](https://www.python.org/dev/peps/pep-0008/) is the basis of these guidelines.
+
 
 ## Contents:
 - [General](#general)
+  - [Python 2/3](#python-2-or-3)
 - [Naming](#naming)
   - [Public object naming](#object-naming)
   - [Private object naming](#private-object-naming)
@@ -27,17 +32,18 @@ They are **Guidelines** not **Rules**. The whole point is to improve readability
   - [Doctests](#doctests)
 
 
-
 ## General:
 
 The flow of a module should follow;
 1. Module docstring (if any).
-2. [Imports](#importing).
-3. Content.
-4. \__all__ declaration (if used).
-5. `if __name__ == '__main__': ` (if used).
+3. [Imports](#importing).
+4. Content.
+5. \_\_all__ declaration (if used).
+6. `if __name__ == '__main__': ` (if used).
 
-Where logical and possible, objects should be declared **before** they are used. We want to improve the developer's chances of encountering an object before it was used - improving readability.
+Where logical and possible, objects should be declared **before** they are used. 
+We want to improve the developer's chances of encountering an object before 
+it was used - improving readability.
 ```python
 # ---------------------------------------------------
 # Yes
@@ -85,6 +91,17 @@ def ensure_strings(items):
 
 ```
 
+### Python 2 or 3:
+
+Where possible and <ins>when it makes sense</ins>, write Python 2 and 3 compatible code. 
+In VFX and Games, projects usually lock to a major version of an Application during production.
+Some of these projects may continue development for several years using a single Application version due to 
+the potential disruption of updating.
+As most Applications are only now just moving to Python 3, it makes very little sense to completely disregard 
+Python 2 until productions have had a chance to move on. 
+
+> :warning: Never assume you know the extent in which your code will be used. People will always surprise you.
+
 
 ## Naming:
 
@@ -95,9 +112,7 @@ These general naming conventions used to help discern intended usage and aid rea
 ```python
 # ../package_name/module_name.py
 
-
 CONSTANT_NAME = ...
-
 variable_name = ...
 
 
@@ -119,9 +134,7 @@ Private objects are simply prefixed with a single underscore.
 ```python
 # ../_package_name/_module_name.py
 
-
 _CONSTANT_NAME = ...
-
 _variable_name = ...
 
 
@@ -139,9 +152,12 @@ class _ClassName(object):
 
 #### General naming conventions
 
-Use descriptive names wherever possible, favouring readability over convenience. This being said - avoid over-descriptive or unnecessary long names, as this is usually unreadable when used.
+Use descriptive names wherever possible, favouring readability over convenience. 
+This being said - avoid over-descriptive or unnecessary long names, as this is usually 
+unreadable when used.
 
-Single letter variable names are only suitable representing an integer and _ for the throwaway variable.
+Single letter variable names are only suitable representing an integer and _ for the 
+throwaway variable.
 ```python
 for i in range(10):
     for _ in range(i):
@@ -168,7 +184,8 @@ override_layer_mode = ...
 
 ### Naming Exceptions:
 
-Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), the general concensus for public objects should reflect existing usage. 
+Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), 
+the general consensus for public objects should reflect existing usage. 
 
 ```python
 # ---------------------------------------------------
@@ -197,7 +214,8 @@ Separate imports by source into 3 distinct groups.
   2. Third-party imports
   3. Local imports.
 
-Sort each group using [natural sort order](https://en.wikipedia.org/wiki/Natural_sort_order) <ins>by line</ins> by line (meaning from is placed before import).
+Sort each group using [natural sort order](https://en.wikipedia.org/wiki/Natural_sort_order) 
+<ins>by line</ins> by line (meaning from is placed before import).
 
 Implicit relative imports are placed first in their respective groups.
 
@@ -273,7 +291,8 @@ except NameError:
 
 ```
 
-Use parenthesis for line continuation and stay away from backslashes for line continuation. Its helps nobody.
+Use parenthesis for line continuation.
+> :warning: Stay the hell away from backslashes for line continuation. 
 
 ```python
 # Long strings
@@ -313,10 +332,11 @@ surname = full_name.split('.')[1]
 
 ## Separators:
 
-Separators are used to group sections of code to improve readability at a glance and therefore are usually as long as you'd accept a line to be.
+Separators are used to group sections of code to improve readability at a glance 
+and therefore are usually as long as you'd accept a line to be.
 
 ```python
-import pprint
+from __future__ import print_function
 
 
 # ---------------------------------------------------
@@ -381,7 +401,8 @@ except Exception:
 ## Docstrings:
 
 Use them and keep them updated. 
-Good docstrings save far more time for developers (yourself included) than time save by not writing them.
+Good docstrings save far more time for developers (yourself included) than time 
+save by not writing them.
 
 ```python
 """
@@ -389,14 +410,44 @@ Example of a Docstring.
 Notice the triple quotes.
 """
 
+class Foo(object):
+    """
+    Example Foo class docstring.
+
+    :param my_arg: Completely useless argument.
+    :type my_arg: int
+    """
+
+    def __init__(self, my_arg):
+        pass
+
+    def bar(self):
+        """Method with no arguments or return."""
+        pass
+
+    def bar_two(self, an_arg):
+        """
+        Takes given `an_arg` and does nothing with it.
+        Will always return 0.
+
+        :param an_arg: Completely useless argument.
+        :type an_arg: int / None
+
+        :return: The value 0.
+        :rtype: int
+        """
+        return 0
+
 ```
 
 
 #### Doctests:
 
-Potentially unclear functionality usually benefits from a concise code example or two. Doctests also provide a
+Potentially unclear functionality usually benefits from a concise code example or two. 
+Doctests also provide a
 "better-than-nothing" alternative to automated testing. 
-If used with an IDE like PyCharm, DocTests can be run with little to no setup, and make usage clearer for other developers.
+If used with an IDE like PyCharm, DocTests can be run with little to no setup, and make 
+usage clearer for other developers.
 
 ```python
 """
@@ -407,17 +458,27 @@ I am now going to show a code example which doubles as a DocTest.
     .. code-block:: python
 
         >>> name = 'mike'
-
         >>> # Test a return
         >>> name.title()
         'Mike'
-
         >>> # Test a variable
         >>> upper_name = name.upper()
         >>> upper_name == 'MIKE'
         True
 
 """
+
+class Foo(object):
+    """
+    Example Foo class DocTest.
+
+    .. code-block:: python
+
+        >>> foo = Foo()
+        >>> isinstance(foo, Foo)
+        True
+
+    """
 
 ```
 
