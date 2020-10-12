@@ -17,6 +17,7 @@ readability and code stability with logical reasoning, not to "check boxes" ala 
 ## Contents:
 - [General](#general)
   - [Python 2/3](#python-2-or-3)
+  - [Which IDE?](#which-ide)
 - [Naming](#naming)
   - [Public object naming](#object-naming)
   - [Private object naming](#private-object-naming)
@@ -45,7 +46,7 @@ Where logical and possible, objects should be declared **before** they are used.
 We want to improve the developer's chances of encountering an object before 
 it was used - improving readability.
 ```python
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # Yes
 def ensure_strings(items):
     return list(map(str, items))
@@ -67,7 +68,7 @@ class Foo(object):
         print(join_names(name_list))
 
 
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # No
 class Foo(object):
 
@@ -87,8 +88,6 @@ def join_names(names, delim=', '):
 
 def ensure_strings(items):
     return list(map(str, items))
-
-
 ```
 
 ### Python 2 or 3:
@@ -101,6 +100,31 @@ As most Applications are only now just moving to Python 3, it makes very little 
 Python 2 until productions have had a chance to move on. 
 
 > :warning: Never assume you know the extent in which your code will be used. People will always surprise you.
+
+
+### Which IDE?:
+
+Unless you are forced otherwise, choose use whichever IDE bests suits you and helps improve 
+your code quality. 
+
+#### My Recommendation
+That being said, I would **highly** recommend investing 
+in [PyCharm](https://www.jetbrains.com/pycharm/) for its convenience, remote debugging, 
+error detection and multitude of other genuinely useful features. 
+I generally hear the same first impression, "it feels very overwhelming/complicated" and 
+to be honest, I had this same first reaction too. 
+Once I pushed myself to use it over a couple of days, I haven't found another IDE I'd rather use.
+
+I've developed professionally with;
+- [Notepad++](https://notepad-plus-plus.org/)
+- [Wing IDE](https://wingware.com/)
+- [Eclipse](https://www.eclipse.org/ide/) (with [PyDev](https://www.pydev.org/))
+- [PyCharm](https://www.jetbrains.com/pycharm/)
+
+and I've dabbled with;
+- [Sublime](https://www.sublimetext.com/)
+- [Atom](https://github.com/atom)
+- [Visual Studio](https://visualstudio.microsoft.com/vs/features/python/)
 
 
 ## Naming:
@@ -125,7 +149,6 @@ class ClassName(object):
 
     def method_name(self, ...):
         ...
-
 ```
 
 #### Private object naming
@@ -147,7 +170,6 @@ class _ClassName(object):
 
     def _method_name(self, ...):
         ...
-
 ```
 
 #### General naming conventions
@@ -167,14 +189,15 @@ for i in range(10):
 Use reverse notation to improve readability and auto-complete.
 
 ```python
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # Yes
 layer_enabled = ...
 layer_disabled = ...
 layer_mode_additive = ...
 layer_mode_override = ...
 
-# ---------------------------------------------------
+
+# --------------------------------------------------------------------------
 # No
 enabled_layer = ...
 disabled_layer = ...
@@ -188,20 +211,20 @@ Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#ov
 the general consensus for public objects should reflect existing usage. 
 
 ```python
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # Yes
 class QCustomWidget(QWidget):
 
     def conformingMethod(self):
         ...
 
-# ---------------------------------------------------
+
+# --------------------------------------------------------------------------
 # No
 class CustomWidget(QWidget):
 
     def non_conforming_method(self):
         ...
-
 ```
 
 
@@ -215,7 +238,7 @@ Separate imports by source into 3 distinct groups.
   3. Local imports.
 
 Sort each group using [natural sort order](https://en.wikipedia.org/wiki/Natural_sort_order) 
-<ins>by line</ins> by line (meaning from is placed before import).
+<ins>by line</ins>, meaning `from sys import ...` is placed before `import abc`.
 
 Implicit relative imports are placed first in their respective groups.
 
@@ -223,7 +246,6 @@ Implicit relative imports are placed first in their respective groups.
 ```python
 from itertools import (
     imap,
-    izip,
     permutations,
 )
 import abc
@@ -265,7 +287,6 @@ dict_comp = {
 for name, age in zip(list_comp,
                      [10, 20, 30]):
     ...
-
 ```
 
 
@@ -288,7 +309,6 @@ try:
 # Account for "name" not being available
 except NameError:
     pass
-
 ```
 
 Use parenthesis for line continuation.
@@ -308,7 +328,6 @@ monty = (
     'the {0} '
     'side of {1}.'
 ).format('bright', 'life')
-
 ```
 
 
@@ -318,12 +337,12 @@ If you intend on getting the last item with a slice, then use -1, regardless of 
 This aids readability by explicitly expressing intent.
 
 ```python
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # Yes
 full_name = 'Bob.Something'
 surname = full_name.split('.')[-1]
 
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # No
 full_name = 'Bob.Something'
 surname = full_name.split('.')[1]
@@ -335,11 +354,13 @@ surname = full_name.split('.')[1]
 Separators are used to group sections of code to improve readability at a glance 
 and therefore are usually as long as you'd accept a line to be.
 
+> It's useful to have a [macro](https://www.jetbrains.com/help/pycharm/using-macros-in-the-editor.html) to create separators to ensure consistency. 
+
 ```python
 from __future__ import print_function
 
 
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 def remove_first_names(name_list):
     family_names = [
         name.split('.')[-1]
@@ -356,11 +377,9 @@ def remove_family_names(name_list):
     return first_names
 
 
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 def is_a_cat_name(name):
     return name in CAT_NAMES
-
-
 ```
 
 
@@ -369,10 +388,10 @@ Try/except blocks should always provide an adequate exception type.
 
 **Lazy Exception handling is discouraged if not necessary.** 
 
-Remember, we want to improve readability not "check boxes".
+> Remember, we want to improve readability not "check boxes".
 
 ```python
-# ---------------------------------------------------
+# --------------------------------------------------------------------------
 # Yes
 try:
     1 / 0
@@ -380,7 +399,8 @@ try:
 except ZeroDivisionError:
     pass
 
-# ---------------------------------------------------
+
+# --------------------------------------------------------------------------
 # No
 try:
     1 / 0
@@ -388,7 +408,8 @@ try:
 except:
     pass
 
-# ---------------------------------------------------
+
+# --------------------------------------------------------------------------
 # Still No
 try:
     1 / 0
@@ -437,7 +458,6 @@ class Foo(object):
         :rtype: int
         """
         return 0
-
 ```
 
 
@@ -479,6 +499,5 @@ class Foo(object):
         True
 
     """
-
 ```
 
