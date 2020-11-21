@@ -31,6 +31,7 @@ readability and code stability with logical reasoning, not to "check boxes" ala 
 - [Exceptions](#exceptions)
 - [Docstrings](#docstrings)
   - [Doctests](#doctests)
+- [Testing](#testing)
 
 
 ## General:
@@ -469,6 +470,9 @@ Doctests also provide a
 If used with an IDE like PyCharm, DocTests can be run with little to no setup, and make 
 usage clearer for other developers.
 
+> :exclamation: Pay attention to the line breaks and indentation for the code 
+> block if you want your doctests to be recognised.
+
 ```python
 """
 Example of a Docstring.
@@ -499,5 +503,35 @@ class Foo(object):
         True
 
     """
+    pass
 ```
 
+
+## Testing:
+
+Write tests. 
+Start simple, its just important that you write tests - [tutorial link](https://realpython.com/python-testing/)
+
+#### unittest
+
+One of the most common testing frameworks is `unittest` - a big plus it being standardlib.
+
+```python
+import unittest
+
+
+# Some class we want to test
+class Foo(object):
+    pass
+
+
+class test_FooClass(unittest.TestCase):
+
+    def test_instance_type_check(self):
+        foo = Foo()
+        self.assertTrue(isinstance(foo, Foo))
+```
+Your testing coverage should reflect the importance of the code you're testing. The more crucial 
+the code, generally the more coverage you should have to reduce the likelihood of an issue.
+
+Automated testing isn't a magic bullet, but it is a very useful tool  
