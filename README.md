@@ -262,7 +262,7 @@ from package_name import other_module
 
 ## Line length:
 
-80-120 characters is usually fine. Just avoid lines that need vertical scrolling.
+80-120 characters is usually fine. Just avoid lines that need horizontal scrolling.
 
 Use parentheses for line continuations.
 
