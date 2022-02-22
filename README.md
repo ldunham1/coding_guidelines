@@ -29,6 +29,8 @@ readability and code stability with logical reasoning, not to "check boxes" ala 
 - [Slicing](#index-slicing)
 - [Separators](#separators)
 - [Exceptions](#exceptions)
+- [Try/Finally](#try-finally)
+- [Logging](#logging)
 - [Docstrings](#docstrings)
   - [Doctests](#doctests)
 - [Testing](#testing)
@@ -293,19 +295,21 @@ for name, age in zip(list_comp,
 
 ## Line breaks and continuation:
 
-Use empty line breaks at the end of a scope and before a comment.
+Use empty line breaks before a comment and before a closing return. 
+In general use them where they help identify context and to avoid a wall of text.
 
 ```python
 try:
+    def main():
+        # "Bob" is a special person, treat them well.
+        if name == 'Bob':
+        
+            # Do something here.
+            something_nice(name)
+        else:
+            print('Not "Bob"')
 
-    # "Bob" is a special person, treat them well.
-    if name == 'Bob':
-    
-        # Do something here.
-        something_nice(name)
-
-    else:
-        print('Not "Bob"')
+        return True
 
 # Account for "name" not being available
 except NameError:
@@ -387,45 +391,104 @@ def is_a_cat_name(name):
 ## Exceptions:
 Try/except blocks should always provide an adequate exception type.
 
-**Lazy Exception handling is discouraged if not necessary.** 
+**Lazy Exception handling is generally discouraged.** 
 
 > Remember, we want to improve readability not "check boxes".
 
 ```python
-# --------------------------------------------------------------------------
 # Yes
 try:
     1 / 0
-
 except ZeroDivisionError:
     pass
 
-
-# --------------------------------------------------------------------------
 # No
 try:
     1 / 0
-
 except:
     pass
 
-
-# --------------------------------------------------------------------------
-# Still No
+# Better but still No
 try:
     1 / 0
-
 except Exception:
     pass
+```
+
+
+## Try Finally:
+Use `finally` to ensure that regardless of how the scope is exited (return, exception etc) that code will be executed (like at `__exit__`)
+
+```python
+import fbx
+
+
+def doit(fbx_filepath):
+    scene = fbx.open(fbx_filepath)
+    try:
+        scene.super_sketchy_op()
+        return 'Success'
+    except RuntimeError:
+        return 'Failed'
+    finally:
+        scene.close()
+```
+
+
+## Logging:
+There is almost no excuse not to use logging. Get into the habit of it as early as possible and keep going. Clients, other devs and future you will thank you for doing so.
+
+```python
+import logging
+
+
+# Unless known, it wont hurt to ensure there is a root logger already setup.
+logging.basicConfig()
+
+# Use the root logger if you dont want to associate your massages 
+# to a specific tool/module, although using I've yet to find 
+# a valid excuse to use debug on a root logger.
+logging.debug('debug')  # Nope.
+logging.info('Like a print, but better.')
+
+# Better to used a named log object
+LOG = logging.getLogger('ExampleLogger')
+LOG.setLevel(logging.INFO)  # Only INFO and above message are printed.
+
+LOG.debug('This is ignored.')
+LOG.info('This is good.')
+LOG.warning('This is great.')
+LOG.error('This is ideal.')
+```
+
+Absolutely use logging for exceptions. Do not use `traceback` in order to print exception info.
+If skipping exceptions (via `pass`) then consider still logging the exception at debug level for future debugging.
+
+```python
+# General usage - output the same information you would get 
+# from `traceback.print_exc()`, but to a configurable logger object.
+try:
+    1 / 0
+except ZeroDivisionError:
+
+    LOG.exception('')  # prints exception and traceback
+
+    # or - you want to provide specific info...
+
+    LOG.exception('Something went wrong doing 1/0!')  # prints traceback and custom error message.
+
+    # or - if you're going to ignore it...
+
+    LOG.debug('Exception & traceback in debug?!', exc_info=True)  # prints traceback and custom message (if given) but at debug level.
 ```
 
 
 ## Docstrings:
 
 Use them and keep them updated. 
-Good docstrings save far more time for developers (yourself included) than time 
-save by not writing them.
-
+Good docstrings save far more time for developers (yourself included) than the time 
+spent writing them. It doesn't matter if you use Epytext, reST or Google -  <b>just use them!</b>
+> Intellisense will make good use of your docstring typehints!
 ```python
 """
 Example of a Docstring. 
@@ -534,4 +597,4 @@ class test_FooClass(unittest.TestCase):
 Your testing coverage should reflect the importance of the code you're testing. The more crucial 
 the code, generally the more coverage you should have to reduce the likelihood of an issue.
 
-Automated testing isn't a magic bullet, but it is a very useful tool  
+Automated testing isn't a magic bullet, but it is a very useful tool. 
