@@ -295,17 +295,20 @@ for name, age in zip(list_comp,
 
 ## Line breaks and continuation:
 
+### Comments
 Use empty line breaks before a comment and before a closing return. 
 In general use them where they help identify context and to avoid a wall of text.
 
 ```python
 try:
     def main():
+
         # "Bob" is a special person, treat them well.
         if name == 'Bob':
-        
-            # Do something here.
             something_nice(name)
+
+        # If we're not "Bob" then just ignore them.
+        # They won't take offense, they totally understand.
         else:
             print('Not "Bob"')
 
@@ -317,7 +320,7 @@ except NameError:
 ```
 
 Use parenthesis for line continuation.
-> :warning: Stay the hell away from backslashes for line continuation. 
+> :warning: Just say NO to backslashes for line continuation. 
 
 ```python
 # Long strings
@@ -333,6 +336,25 @@ monty = (
     'the {0} '
     'side of {1}.'
 ).format('bright', 'life')
+```
+
+### Functions/Methods
+For functions or methods with many arguments, use inline line continuation to improve readability.
+```python
+def make(name,
+         size,
+         colour,
+         alliance=None,
+         awards=0):
+    pass
+
+make(
+    'Example',
+    size=(10, 10),
+    colour=(255, 0, 0),
+    alliance='neutral',
+    awards=100,
+)
 ```
 
 
@@ -470,15 +492,12 @@ If skipping exceptions (via `pass`) then consider still logging the exception at
 try:
     1 / 0
 except ZeroDivisionError:
-
     LOG.exception('')  # prints exception and traceback
 
     # or - you want to provide specific info...
-
     LOG.exception('Something went wrong doing 1/0!')  # prints traceback and custom error message.
 
     # or - if you're going to ignore it...
-
     LOG.debug('Exception & traceback in debug?!', exc_info=True)  # prints traceback and custom message (if given) but at debug level.
 ```
 
