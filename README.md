@@ -338,6 +338,16 @@ monty = (
 ).format('bright', 'life')
 ```
 
+### Conditions
+Use newlines with an additional indent level to make long conditions easier to digest.
+
+```python
+if ((True and False) and
+        (True and None) and
+        (False or None == False)):
+    print('huh?')
+```
+
 ### Functions/Methods
 For functions or methods with many arguments, use inline line continuation to improve readability.
 ```python
