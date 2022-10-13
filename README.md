@@ -109,25 +109,31 @@ Python 2 until productions have had a chance to move on.
 
 Unless you are forced otherwise, choose use whichever IDE bests suits you and helps improve 
 your code quality. 
-
-#### My Recommendation
-That being said, I would **highly** recommend investing 
-in [PyCharm](https://www.jetbrains.com/pycharm/) for its convenience, remote debugging, 
-error detection and multitude of other genuinely useful features. 
-I generally hear the same first impression, "it feels very overwhelming/complicated" and 
-to be honest, I had this same first reaction too. 
-Once I pushed myself to use it over a couple of days, I haven't found another IDE I'd rather use.
+That being said, I would **highly** recommend investing in an IDE with a minimum set of features.
+- Remote Debugging.
+    Connect to another process and real-time debug your Python code.
+- Conditional Breakpoints, Variable Watching, Expression Evaluation.
+    Various "essential" debugging features when remote debugging.
+- Version Control Integration; Git, Perforce (if necessary).
+    Often taken for granted how much time can be saved not manually executing git commands or p4 calls.
+- Code Completion (type matching), PEP8 Inspections & highlighting.
+    A must have for any Python IDE.
+- Local History.
+    Provides a significant workflow iteration boost being able to immediately check what has changed in the last few minutes from working to non-working code.
 
 I've developed professionally with;
 - [Notepad++](https://notepad-plus-plus.org/)
 - [Wing IDE](https://wingware.com/)
 - [Eclipse](https://www.eclipse.org/ide/) (with [PyDev](https://www.pydev.org/))
 - [PyCharm](https://www.jetbrains.com/pycharm/)
+- [Visual Studio](https://visualstudio.microsoft.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
 
 and I've dabbled with;
 - [Sublime](https://www.sublimetext.com/)
 - [Atom](https://github.com/atom)
-- [Visual Studio](https://visualstudio.microsoft.com/vs/features/python/)
+
+I personally work well with PyCharm and often end up showing colleagues various features that compliment their own workflow (or even functionality they didnt even consider to exist - Diff Local History, for example).
 
 
 ## Naming:
