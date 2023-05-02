@@ -265,6 +265,10 @@ import six
 
 from . import some_module
 from package_name import other_module
+
+
+class Foo(object):
+    ...
 ```
 
 
@@ -289,7 +293,7 @@ list_comp = [
 dict_comp = {
     firstname: surname 
     for full_name in full_name_list
-    for firstname, surname  in full_name.split('.')
+    for firstname, surname in full_name.split('.')
 }
 
 # Use aligned indentation to identify groups.
@@ -406,7 +410,7 @@ from __future__ import print_function
 # --------------------------------------------------------------------------
 def remove_first_names(name_list):
     family_names = [
-        name.split('.')[-1]
+        name.rsplit('.', 1)[-1]
         for name in name_list
     ]
     return family_names
@@ -414,7 +418,7 @@ def remove_first_names(name_list):
 
 def remove_family_names(name_list):
     first_names = [
-        name.split('.')[0]
+        name.split('.', 1)[0]
         for name in name_list
     ]
     return first_names
@@ -431,7 +435,7 @@ Try/except blocks should always provide an adequate exception type.
 
 **Lazy Exception handling is generally discouraged.** 
 
-> Remember, we want to improve readability not "check boxes".
+> Remember, we want to improve readability, not just "check boxes".
 
 ```python
 # Yes
@@ -526,16 +530,16 @@ spent writing them. It doesn't matter if you use Epytext, reST or Google -  <b>j
 > Intellisense will make good use of your docstring typehints!
 ```python
 """
-Example of a Docstring. 
+Example of a module Docstring. 
 Notice the triple quotes.
 """
+
 
 class Foo(object):
     """
     Example Foo class docstring.
 
-    :param my_arg: Completely useless argument.
-    :type my_arg: int
+    :param int my_arg: Completely useless argument.
     """
 
     def __init__(self, my_arg):
@@ -549,10 +553,7 @@ class Foo(object):
         """
         Takes given `an_arg` and does nothing with it.
         Will always return 0.
-
-        :param an_arg: Completely useless argument.
-        :type an_arg: int / None
-
+        :param int/None an_arg: Completely useless argument.
         :return: The value 0.
         :rtype: int
         """
