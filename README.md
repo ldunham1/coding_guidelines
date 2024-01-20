@@ -15,8 +15,9 @@ readability and code stability with logical reasoning, not to "check boxes" ala 
 
 
 #### Suggestion:
-Check out Raymond Hettinger on YouTube for  super informative and clear examples of using Python well (yes, some of these links are _old_, doesn't make them irrelevant or useless).
+Check out Raymond Hettinger and James Powell on YouTube for super informative and clear examples of using Python well (yes, some of these links are _old_, doesn't make them irrelevant or useless).
 - [Transforming Code into Beautiful, Idiomatic Python](https://youtu.be/OSGv2VnC0go?si=2I3EeM-F3w8rkZ71)
+- [So you want to be a Python Expert?](https://youtu.be/cKPlPJyQrt4?si=5cDjICWmBVDt7kPA)
 
 
 ## Contents:
