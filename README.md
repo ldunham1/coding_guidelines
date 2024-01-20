@@ -14,7 +14,7 @@ readability and code stability with logical reasoning, not to "check boxes" ala 
 [PEP 8](https://www.python.org/dev/peps/pep-0008/) is the basis of these guidelines.
 
 
-## Suggestion:
+#### Suggestion:
 Check out Raymond Hettinger on YouTube for  super informative and clear examples of using Python well (yes, some of these links are _old_, doesn't make them irrelevant or useless).
 - [Transforming Code into Beautiful, Idiomatic Python](https://youtu.be/OSGv2VnC0go?si=2I3EeM-F3w8rkZ71)
 
