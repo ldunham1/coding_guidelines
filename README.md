@@ -3,21 +3,13 @@
 ![Python-Image](https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png)
 
 ## Introduction:
-These guidelines have been designed for Python by <ins>non-programmers</ins> favouring logic and 
-readability to improve likelihood of adoption.
+These guidelines have been designed for Python by <ins>non-programmers</ins> using contextual logic and 
+readability.
 
-They have been developed over various projects and will continue to do so. 
-
-They are **Guidelines** not **Rules**. The whole point is to improve 
-readability and code stability with logical reasoning, not to "check boxes" ala "pep8-ers".
+Remember, they are **Guidelines** <ins>not</ins> **Rules**. The goal is to improve 
+code readability and stability using logical reasoning and consistency and not to "check boxes" (ala "pep8-ers").
  
 [PEP 8](https://www.python.org/dev/peps/pep-0008/) is the basis of these guidelines.
-
-
-#### Suggestion:
-Check out Raymond Hettinger and James Powell on YouTube for super informative and clear examples of using Python well (yes, some of these links are _old_, doesn't make them irrelevant or useless).
-- [Transforming Code into Beautiful, Idiomatic Python](https://youtu.be/OSGv2VnC0go?si=2I3EeM-F3w8rkZ71)
-- [So you want to be a Python Expert?](https://youtu.be/cKPlPJyQrt4?si=5cDjICWmBVDt7kPA)
 
 
 ## Contents:
@@ -29,7 +21,7 @@ Check out Raymond Hettinger and James Powell on YouTube for super informative an
   - [Private object naming](#private-object-naming)
   - [General naming conventions](#general-naming-conventions)
   - [Naming Exceptions](#naming-exceptions)
-- [Importing](#importing)
+- [Imports](#imports)
 - [Line Length](#line-length)
 - [Line Breaks and Continuation](#line-breaks-and-continuation)
 - [Slicing](#index-slicing)
@@ -41,6 +33,7 @@ Check out Raymond Hettinger and James Powell on YouTube for super informative an
   - [Doctests](#doctests)
 - [Testing](#testing)
 
+---
 
 ## General:
 
@@ -141,6 +134,7 @@ and I've dabbled with;
 
 I personally work well with PyCharm and often end up showing colleagues various features that compliment their own workflow (or even functionality they didnt even consider to exist - Diff Local History, for example).
 
+---
 
 ## Naming:
 
@@ -242,8 +236,9 @@ class CustomWidget(QWidget):
         ...
 ```
 
+---
 
-## Importing:
+## Imports:
 
 Imports are grouped, sorted and indented logically to improve readability.
 
@@ -277,10 +272,11 @@ class Foo(object):
     ...
 ```
 
+---
 
 ## Line length:
 
-80-120 characters is usually fine. Just avoid lines that need horizontal scrolling.
+80-120 characters is usually fine. Just avoid lines that need horizontal scrolling on a "standard" screen size (24").
 
 Use parentheses for line continuations.
 
@@ -308,6 +304,7 @@ for name, age in zip(list_comp,
     ...
 ```
 
+---
 
 ## Line breaks and continuation:
 
@@ -401,6 +398,7 @@ full_name = 'Bob.Something'
 surname = full_name.split('.')[1]
 ```
 
+---
 
 ## Separators:
 
@@ -435,6 +433,7 @@ def is_a_cat_name(name):
     return name in CAT_NAMES
 ```
 
+---
 
 ## Exceptions:
 Try/except blocks should always provide an adequate exception type.
@@ -463,6 +462,7 @@ except Exception:
     pass
 ```
 
+---
 
 ## Try Finally:
 Use `finally` to ensure that regardless of how the scope is exited (return, exception etc) that code will be executed (like at `__exit__`)
@@ -482,6 +482,7 @@ def doit(fbx_filepath):
         scene.close()
 ```
 
+---
 
 ## Logging:
 There is almost no excuse not to use logging. Get into the habit of it as early as possible and keep going. Clients, other devs and future you will thank you for doing so.
@@ -527,6 +528,7 @@ except ZeroDivisionError:
     LOG.debug('Exception & traceback in debug?!', exc_info=True)  # prints traceback and custom message (if given) but at debug level.
 ```
 
+---
 
 ## Docstrings:
 
@@ -611,6 +613,7 @@ class Foo(object):
     pass
 ```
 
+---
 
 ## Testing:
 
@@ -640,3 +643,10 @@ Your testing coverage should reflect the importance of the code you're testing. 
 the code, generally the more coverage you should have to reduce the likelihood of an issue.
 
 Automated testing isn't a magic bullet, but it is a very useful tool. 
+
+---
+
+#### Further Reading:
+Check out Raymond Hettinger and James Powell on YouTube for super informative and clear examples of using Python well (yes, some of these links are _old_, doesn't make them irrelevant or useless).
+- [Transforming Code into Beautiful, Idiomatic Python](https://youtu.be/OSGv2VnC0go?si=2I3EeM-F3w8rkZ71)
+- [So you want to be a Python Expert?](https://youtu.be/cKPlPJyQrt4?si=5cDjICWmBVDt7kPA)
