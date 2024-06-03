@@ -189,13 +189,18 @@ unreadable when used.
 
 Single letter variable names are only suitable representing an integer and _ for the 
 throwaway variable.
+> !! <ins>DO NOT</ins> use `_` as a typical variable !!
 ```python
+# `i` is used to represent an iterating integer.
 for i in range(10):
-    for _ in range(i):
+    # `_` is not used at all.
+    for _ in range(i):    
         print(True)
 ```
 
-Use reverse notation to improve readability and auto-complete.
+
+Use reverse notation to improve readability and auto-complete.  
+This is true for variables, namespaces, functions & methods etc.
 
 ```python
 # --------------------------------------------------------------------------
@@ -215,26 +220,59 @@ override_layer_mode = ...
 ```
 
 ### Naming Exceptions:
+##### [PEP8](https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds)
+> A style guide is about consistency. Consistency with this style guide is important. 
+> Consistency within a project is more important. Consistency within one module or function is the most important.  
+> However, know when to be inconsistent – sometimes style guide recommendations just aren’t applicable. 
+> When in doubt, use your best judgment. Look at other examples and decide what looks best. And don’t hesitate to ask!  
+> 
+> In particular: do not break backwards compatibility just to comply with this PEP!
 
-Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), 
-the general consensus for public objects should reflect existing usage. 
 
+Like [PEP 8's Overriding Principle](https://www.python.org/dev/peps/pep-0008/#overriding-principle), the consensus for public objects should reflect existing usage <ins>for consistency</ins>.
+> Names that are visible to the user as public parts of the API should follow conventions that reflect usage rather than implementation.
+
+
+In cases of Qt (PyQt, PySide and DCCs like Maya and Motionbuilder) camelCase is standard, so any extensions 
+will conform better using the same convention.   
+
+> ..NOTE:: Worth pointing out the obvious, if there is already a convention for this exception in your 
+> environment, use that for consistency. 
 ```python
 # --------------------------------------------------------------------------
 # Yes
 class QCustomWidget(QWidget):
 
+    def setParent(self, parent):
+        ...
+
     def conformingMethod(self):
         ...
 
+...
+
+widget.setParent(None)
+widget.conformingMethod()
 
 # --------------------------------------------------------------------------
 # No
 class CustomWidget(QWidget):
 
+    def setParent(self, parent):
+        ...
+
     def non_conforming_method(self):
         ...
+
+...
+
+widget.setParent(None)
+widget.non_conforming_method()
 ```
+
+A common retort to this recommendation is "using snake_case allows us to see easily see custom code".  
+Well 
+yeah, until you need to override. This it's a moot point.
 
 ---
 
@@ -352,14 +390,32 @@ monty = (
 ```
 
 ### Conditions
-Use newlines with an additional indent level to make long conditions easier to digest.
+Use newlines with an additional indent level to make long conditions easier to digest.  
+When you have multiple lines or confusing conditions, use variables instead.
 
 ```python
-if ((True and False) and
-        (True and None) and
-        (False or None == False)):
+if (age >= 25 and age <= 55) and (credit_score > 700 or credit_score > 650) and ((annual_income >= 50000 and employment_years >= 3) or annual_income >= 80000):
+    print('huh?')
+
+# --------------------------------------------------------------------------
+# Better
+if ((age >= 25 and age <= 55) and 
+        (credit_score > 700 or credit_score > 650) and 
+        ((annual_income >= 50000 and employment_years >= 3) or annual_income >= 80000)):
+    print('huh?')
+
+# --------------------------------------------------------------------------
+# Best
+middle_aged = age >= 25 and age <= 55
+acceptable_credit = credit_score > 700 or credit_score > 650
+acceptable_income = (annual_income >= 50000 and employment_years >= 3) or annual_income >= 80000
+if middle_aged and acceptable_credit and acceptable_income:
     print('huh?')
 ```
+
+In the instances where the conditions need to be evaluated sequentially, multiple if conditions might 
+be more readable in the end.
+
 
 ### Functions/Methods
 For functions or methods with many arguments, use inline line continuation to improve readability.
@@ -368,7 +424,10 @@ def make(name,
          size,
          colour,
          alliance=None,
-         awards=0):
+         awards=0,
+         cats=0,
+         dogs=0,
+         goldfish=1000):
     pass
 
 make(
@@ -377,25 +436,32 @@ make(
     colour=(255, 0, 0),
     alliance='neutral',
     awards=100,
+    dogs=20,
 )
 ```
 
 
 ## Index slicing:
 
-If you intend on getting the last item with a slice, then use -1, regardless of the fixed length.
+If you intend to get the last item with a slice, then use -1, regardless of the fixed length.
 This aids readability by explicitly expressing intent.
 
 ```python
 # --------------------------------------------------------------------------
 # Yes
-full_name = 'Bob.Something'
+full_name = 'Bob.Something.Something'
 surname = full_name.split('.')[-1]
 
 # --------------------------------------------------------------------------
 # No
-full_name = 'Bob.Something'
+full_name = 'Bob.Something.Something'
 surname = full_name.split('.')[1]
+```
+
+Or better yet, use `str.rsplit(..., 1)[-1]` to avoid unnecessary splitting.
+```python
+full_name = 'Bob.Something.Something'
+surname = full_name.rsplit('.', 1)[-1]
 ```
 
 ---
@@ -408,7 +474,7 @@ and therefore are usually as long as you'd accept a line to be.
 > It's useful to have a [macro](https://www.jetbrains.com/help/pycharm/using-macros-in-the-editor.html) to create separators to ensure consistency. 
 
 ```python
-from __future__ import print_function
+from .constants import CAT_NAMES
 
 
 # --------------------------------------------------------------------------
@@ -440,7 +506,7 @@ Try/except blocks should always provide an adequate exception type.
 
 **Lazy Exception handling is generally discouraged.** 
 
-> Remember, we want to improve readability, not just "check boxes".
+> Remember, we want to improve readability not just "check boxes".
 
 ```python
 # Yes
@@ -449,12 +515,14 @@ try:
 except ZeroDivisionError:
     pass
 
+# --------------------------------------------------------------------------
 # No
 try:
     1 / 0
 except:
     pass
 
+# --------------------------------------------------------------------------
 # Better but still No
 try:
     1 / 0
@@ -465,7 +533,9 @@ except Exception:
 ---
 
 ## Try Finally:
-Use `finally` to ensure that regardless of how the scope is exited (return, exception etc) that code will be executed (like at `__exit__`)
+Use `finally` to ensure that regardless of how the scope is exited (return, exception etc) that code will be 
+executed (like at `__exit__`).  
+Also, make it easy for others to see the potential issues.
 
 ```python
 import fbx
@@ -476,8 +546,8 @@ def doit(fbx_filepath):
     try:
         scene.super_sketchy_op()
         return 'Success'
-    except RuntimeError:
-        return 'Failed'
+    except RuntimeError as e:
+        return 'Failed due to :: {}'.format(e)
     finally:
         scene.close()
 ```
@@ -485,7 +555,8 @@ def doit(fbx_filepath):
 ---
 
 ## Logging:
-There is almost no excuse not to use logging. Get into the habit of it as early as possible and keep going. Clients, other devs and future you will thank you for doing so.
+There is almost no excuse not to use logging. Get into the habit of it as early as possible and keep going. 
+Clients, other devs and future you will thank you for doing so.
 
 ```python
 import logging
@@ -501,13 +572,13 @@ logging.debug('debug')  # Nope.
 logging.info('Like a print, but better.')
 
 # Better to used a named log object
-LOG = logging.getLogger('ExampleLogger')
-LOG.setLevel(logging.INFO)  # Only INFO and above message are printed.
+LOGGER = logging.getLogger('ExampleLogger')
+LOGGER.setLevel(logging.INFO)  # Only INFO and above message are printed.
 
-LOG.debug('This is ignored.')
-LOG.info('This is good.')
-LOG.warning('This is great.')
-LOG.error('This is ideal.')
+LOGGER.debug('This is ignored.')
+LOGGER.info('This is good.')
+LOGGER.warning('This is great.')
+LOGGER.error('This is ideal.')
 ```
 
 Absolutely use logging for exceptions. Do not use `traceback` in order to print exception info.
@@ -518,14 +589,14 @@ If skipping exceptions (via `pass`) then consider still logging the exception at
 # from `traceback.print_exc()`, but to a configurable logger object.
 try:
     1 / 0
-except ZeroDivisionError:
-    LOG.exception('')  # prints exception and traceback
+except ZeroDivisionError as e:
+    LOGGER.exception(e)  # prints exception and traceback
 
     # or - you want to provide specific info...
-    LOG.exception('Something went wrong doing 1/0!')  # prints traceback and custom error message.
+    LOGGER.exception('Something went wrong :: {}'.format(e))  # prints traceback and custom error message.
 
     # or - if you're going to ignore it...
-    LOG.debug('Exception & traceback in debug?!', exc_info=True)  # prints traceback and custom message (if given) but at debug level.
+    LOGGER.debug('Exception & traceback in debug :: {}'.format(e), exc_info=True)  # prints traceback and custom message (if given) but at debug level.
 ```
 
 ---
@@ -562,8 +633,7 @@ class Foo(object):
         Takes given `an_arg` and does nothing with it.
         Will always return 0.
         :param int/None an_arg: Completely useless argument.
-        :return: The value 0.
-        :rtype: int
+        :return int: The value 0.
         """
         return 0
 ```
