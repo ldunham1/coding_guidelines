@@ -3,8 +3,8 @@
 ![Python-Image](https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png)
 
 ## Introduction:
-These guidelines have been designed for Python by <ins>non-programmers</ins> using contextual logic and 
-readability.
+These guidelines have been designed for writing Python code as Technical Artist/Animator. It focuses on contextual logic and 
+readability from the experiences of managing multiple code bases and teams.
 
 Remember, they are **Guidelines** <ins>not</ins> **Rules**. The goal is to improve 
 code readability and stability using logical reasoning and consistency and not to "check boxes" (ala "pep8-ers").
